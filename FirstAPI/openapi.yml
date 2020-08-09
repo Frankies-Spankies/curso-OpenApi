@@ -28,7 +28,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CostumerList"
+                $ref: "#/components/schemas/CustomerPagedList"
 
   /v1/beers:
     get:
@@ -38,55 +38,39 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                description: Beer object
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      minLength: 2
-                      maxLength: 200
-                      example: XXLagger
-                    style:
-                      type: string
-                      minLength: 2
-                      maxLength: 8
-                      enum:
-                        - LAGGER
-                        - ALE
-                        - PALE_ALE
-                        - IPA
-                        - WHEAT
-                    price:
-                      type: number
-                      format: float
-                      minimum: 0 
-                    quantityOnHand: 
-                      type: integer
-                      format: int64
-                      minimum: 0     
-                    upc:
-                      type: number
-                      format: upc
-                    brewery:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          minLength: 2
-                          maxLength: 100
-                          example: HEINEKEN
-                        location:
-                          type: string
-                          minLength: 2
-                          maxLength: 100
-                          example: Mexico        
+                $ref: "#/components/schemas/BeerPagedList"
         '404':
-          description: Not Beers found  
+            description: Not Beers found  
 
+#Components
 components:
   schemas:
+
+    #Pages List
+
+    BeerPagedList:
+      type: object
+      #Simplemente se injecta el schema, no va en properties
+      allOf:
+        - $ref: "#/components/schemas/PagedResponse"
+      properties:
+        content:
+          $ref: "#/components/schemas/BeerList"
+
+    CustomerPagedList:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/PagedResponse"
+      properties:
+        content: 
+          $ref:  "#/components/schemas/CostumerList"
+
+    #Lists
+    BeerList:
+      type: array
+      description: Beer object
+      items:
+        $ref: "#/components/schemas/Beer"
 
     CostumerList:
       type: array
@@ -96,6 +80,7 @@ components:
       items:
         $ref: "#/components/schemas/Customer"
 
+    #Objects
     Adress:
       type: object
       properties:
@@ -138,4 +123,105 @@ components:
           maxLength: 200
           example: spanki
         adress:
-          $ref: "#/components/schemas/Adress"                                               
+          $ref: "#/components/schemas/Adress" 
+
+    Brewery:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: HEINEKEN
+        location:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Mexico        
+
+    Beer:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 200
+          example: XXLagger
+        style:
+          type: string
+          minLength: 2
+          maxLength: 8
+          enum:
+            - LAGGER
+            - ALE
+            - PALE_ALE
+            - IPA
+            - WHEAT
+        price:
+          type: number
+          format: float
+          minimum: 0 
+        quantityOnHand: 
+          type: integer
+          format: int64
+          minimum: 0     
+        upc:
+          type: number
+          format: upc
+        brewery:
+          $ref: "#/components/schemas/Brewery"
+
+    #Pages Response
+    PagedResponse:
+      type: object
+      properties:
+        pageable:
+          $ref: '#/components/schemas/PagedResponse_pageable'
+        totalPages:
+          type: integer
+          format: int32
+        last:
+          type: boolean
+        totalElements:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/PagedResponse_pageable_sort'
+        first:
+          type: boolean
+          
+    PagedResponse_pageable_sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+    PagedResponse_pageable:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/PagedResponse_pageable_sort'
+        offset:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+
