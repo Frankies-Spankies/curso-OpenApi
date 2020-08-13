@@ -1,0 +1,67 @@
+Brewery:
+  type: object
+  properties:
+    name:
+      type: string
+      minLength: 2
+      maxLength: 100
+      example: HEINEKEN
+    location:
+      type: string
+      minLength: 2
+      maxLength: 100
+      example: Cuba
+
+Beer:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      readOnly: true
+    name:
+      type: string
+      minLength: 2
+      maxLength: 200
+      example: XXLagger
+    style:
+      type: string
+      minLength: 2
+      maxLength: 8
+      enum:
+        - LAGGER
+        - ALE
+        - PALE_ALE
+        - IPA
+        - WHEAT
+    price:
+      type: number
+      format: float
+      minimum: 0 
+    quantityOnHand: 
+      type: integer
+      format: int64
+      minimum: 0     
+    upc:
+      type: number
+      format: upc
+    brewery:
+      $ref: "#/Brewery"
+
+#Lists
+BeerList:
+  type: array
+  description: Beer object
+  items:
+    $ref: "#/Beer"
+
+#Pages List
+BeerPagedList:
+  type: object
+  #Simplemente se injecta el schema, no va en properties
+  allOf:
+    - $ref: "./schemas.yaml#/schemas/PagedResponse"
+  properties:
+    content:
+      $ref: "#/BeerList"
+

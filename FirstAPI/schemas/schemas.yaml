@@ -1,0 +1,32 @@
+schemas:
+
+  CustomerPagedList:
+    $ref: "./customers.yaml#/CustomerPagedList"
+  CostumerList:
+    $ref: "./customers.yaml#/CostumerList"
+  Adress:
+    $ref: "./customers.yaml#/Adress"
+  Customer:
+    $ref: "./customers.yaml#/Customer"
+
+
+  BeerPagedList:
+    $ref: "./beers.yaml#/BeerPagedList"
+  Brewery:
+    $ref: "./beers.yaml#/Brewery"
+  Beer:
+    $ref: "./beers.yaml#/Beer"
+  BeerList:
+    $ref: "./beers.yaml#/BeerList"
+
+
+
+  #Pages Response
+  PagedResponse:
+    $ref: "./pages.yaml#/PagedResponse"
+  PagedResponse_pageable_sort:
+    $ref: "./pages.yaml#/PagedResponse_pageable_sort"
+  PagedResponse_pageable:
+    $ref: "./pages.yaml#/PagedResponse_pageable"
+
+
