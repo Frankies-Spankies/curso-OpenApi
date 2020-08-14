@@ -16,4 +16,22 @@ parameters:
     schema:
       type: integer
       format: int64
-      default: 25    
+      default: 25   
+
+  CustomerIdParam:
+    name: customerId
+    in: path
+    description: Customer Id
+    required: true
+    schema:
+      type: string
+      format: uuid
+
+  BeerIdParam:
+    name: beerId
+    in: path
+    required: true
+    description: Beer Id
+    schema:
+      type: string
+      format: uuid

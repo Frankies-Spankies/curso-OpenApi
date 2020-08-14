@@ -58,6 +58,12 @@ paths:
                 type: string
                 format: uri
                 example: http://example.com/v1/customers/{assignedIdValue}
+
+        '400':
+          description: Bad Request
+
+        '409':
+          description: Conflict
         
       deprecated: false
 
@@ -71,14 +77,9 @@ paths:
         - Customers
       operationId: getCustomerByIdV1
       parameters:
-        - name: customerId
-          in: path
-          description: Customer Id
-          required: true
-          schema:
-            type: string
-            format: uuid
+        - $ref: "#/components/parameters/CustomerIdParam"
       responses:
+
         '200':
           description: Found Customer
           content:
@@ -86,14 +87,52 @@ paths:
               schema:
                 $ref: "#/components/schemas/Customer"
 
+        '404':
+          description: Not found
+
     put:
       summary: Update Customer
-      description: Update a customer
+      description: Update a customer by Id.
       tags:
         - Customers
+      parameters:
+        - $ref: "#/components/parameters/CustomerIdParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
       responses:
+
+        '204':
+          description: Customer Updated
+
+        '400':
+          description: Bad Request
+
+
+        
+
+    delete:
+      summary: Delete Customer By Id
+      description: Delete custumer by id value.
+      tags:
+        - Customers
+      operationId: deleteByIdV1
+      parameters:
+        - $ref: "#/components/parameters/CustomerIdParam"
+      responses:
+
         '200':
-          description: hola
+          description: Customer Deleted.
+
+        '404':
+          description: Not found
+
+        '409':
+          description: Conflict          
+
 
   /v1/beers:
     get:
@@ -103,13 +142,8 @@ paths:
         - Beers
       operationId: listBeersV1
       parameters:
-        - name: beerId
-          in: path
-          description: Beer Id
-          required: true
-          schema:
-            type: string
-            format: uuid
+        - $ref: "#/components/parameters/PageNumberParam"
+        - $ref: "#/components/parameters/PageSizeParam"
 
       responses:
         '200':
@@ -130,6 +164,7 @@ paths:
             schema:
               $ref: "#/components/schemas/Beer"
       responses:
+
         '201':
           description: Beer Created
           headers:
@@ -138,6 +173,12 @@ paths:
                 type: string
                 format: uri
                 example: http://example.com/v1/beers/{assignedIdValue}
+
+        '400':
+          description: Bad Request
+
+        '409':
+          description: Conflict
 
 
   /v1/beers/{beerId}:
@@ -148,8 +189,8 @@ paths:
         - Beers
       operationId: getBeerByIdV1
       parameters:
-        - $ref: "#/components/parameters/PageNumberParam"
-        - $ref: "#/components/parameters/PageSizeParam"
+        - $ref: "#/components/parameters/BeerIdParam"
+
       responses:
         '200':
           description: List of Beers
@@ -157,8 +198,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Beer"
+        '204':
+            description: Beer Updated
+
+    put:
+      summary: Update Beer
+      description: Update beer by Id.
+      tags:
+        - Beers
+      parameters:
+        - $ref: "#/components/parameters/BeerIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Beer"
+      responses:
+        '204':
+            description: Beer Updated
+
+        '400':
+          description: Bad Request
+
+    delete:
+      summary: Delete Beer By Id
+      description: Delete beer by id value.
+      tags:
+        - Beers
+      operationId: deleteBeerById
+      parameters:
+        - $ref: "#/components/parameters/BeerIdParam"
+
+      responses:
+        '200':
+          description: Beer Deleted.
+
         '404':
-            description: Not Beers found  
+          description: Not found
+
+        '409':
+          description: Conflict    
+        
+  
 
 #Components
 components:

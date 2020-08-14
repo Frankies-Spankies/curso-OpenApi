@@ -10,7 +10,7 @@ Brewery:
       type: string
       minLength: 2
       maxLength: 100
-      example: Cuba
+      example: Mexico
 
 Beer:
   type: object
