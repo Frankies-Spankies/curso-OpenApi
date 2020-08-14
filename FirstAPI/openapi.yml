@@ -37,6 +37,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CustomerPagedList"
+      #Seguridad a nivel de operacion, en este caso al tener un arreglo vacio, esta operacion no nesesita seguridad
+      security: []
     post:
       summary: New Customer
       description: Create a new customer.
@@ -89,6 +91,9 @@ paths:
 
         '404':
           description: Not found
+
+      security: []
+
 
     put:
       summary: Update Customer
@@ -238,11 +243,25 @@ paths:
 
         '409':
           description: Conflict    
-        
-  
+
+#Se aplicara de manera global al estar la etiqueta en el root, i.e en todas las operaciones        
+security:
+  - BasicAuth: [] 
+  - JwtAuthToken: []
+
 
 #Components
 components:
+
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+
+    JwtAuthToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
   parameters:
     $ref: "./parameters/parameters.yaml#/parameters"
